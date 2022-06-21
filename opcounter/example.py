@@ -6,7 +6,7 @@ from opcounter.counter import counter
 from opcounter.hooks import *
 
 if __name__ == "__main__":
-    model = resnet18(pretrained=True)
+    model = resnet50(pretrained=True)
     input_tuple = (torch.randn(1, 3, 224, 224),)
     dst = counter(model, input_tuple, [
         Conv2DForwardHook(),
