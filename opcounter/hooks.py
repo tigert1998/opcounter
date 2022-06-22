@@ -18,7 +18,7 @@ class Conv2DForwardHook:
             muladds = b * module.out_channels * out_h * out_w * \
                 module.kernel_size[0] * \
                 module.kernel_size[1] * module.in_channels
-            mem = 4 * (b * module.in_channels * h * w + np.prod(module.kernel_size) +
+            mem = 4 * (b * module.in_channels * h * w + np.prod(module.weight.shape) +
                        b * module.out_channels * out_h * out_w)
             dst["muladds"] = dst.get("muladds", 0) + muladds
             dst["mem"] = dst.get("mem", 0) + mem
