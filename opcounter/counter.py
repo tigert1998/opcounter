@@ -8,6 +8,7 @@ def counter(model, input_tuple, hooks):
             if isinstance(module, hook.module):
                 handle = module.register_forward_hook(hook(dst))
                 handles.append(handle)
+                break
 
     training = model.training
     model.eval()
