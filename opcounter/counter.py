@@ -1,14 +1,21 @@
+import torch.nn as nn
+
+
 def counter(model, input_tuple, hooks):
     dst = {}
 
     handles = []
 
-    for module in model.modules():
+    def dfs(module: nn.Module):
         for hook in hooks:
             if isinstance(module, hook.module):
                 handle = module.register_forward_hook(hook(dst))
                 handles.append(handle)
-                break
+                return
+        for module in module.children():
+            dfs(module)
+
+    dfs(model)
 
     training = model.training
     model.eval()
