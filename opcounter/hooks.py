@@ -20,9 +20,12 @@ class Conv2DForwardHook:
                 module.kernel_size[1] * module.in_channels
             mem = 4 * (b * module.in_channels * h * w + np.prod(module.weight.shape) +
                        b * module.out_channels * out_h * out_w)
+            params = 4 * np.prod(module.weight.shape)
+
             dst["muladds"] = dst.get("muladds", 0) + muladds
             dst["mem"] = dst.get("mem", 0) + mem
             dst["max_mem"] = max(dst.get("max_mem", 0), mem)
+            dst["params"] = dst.get("params", 0) + params
 
         return func
 
@@ -38,8 +41,11 @@ class LinearForwardHook:
             muladds = b * in_features * out_features
             mem = 4 * (b * in_features + b * out_features +
                        in_features * out_features)
+            params = 4 * in_features * out_features
+
             dst["muladds"] = dst.get("muladds", 0) + muladds
             dst["mem"] = dst.get("mem", 0) + mem
             dst["max_mem"] = max(dst.get("max_mem", 0), mem)
+            dst["params"] = dst.get("params", 0) + params
 
         return func
