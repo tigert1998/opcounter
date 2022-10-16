@@ -22,6 +22,7 @@ class Conv2DForwardHook:
                        b * module.out_channels * out_h * out_w)
             dst["muladds"] = dst.get("muladds", 0) + muladds
             dst["mem"] = dst.get("mem", 0) + mem
+            dst["max_mem"] = max(dst.get("max_mem", 0), mem)
 
         return func
 
@@ -39,4 +40,6 @@ class LinearForwardHook:
                        in_features * out_features)
             dst["muladds"] = dst.get("muladds", 0) + muladds
             dst["mem"] = dst.get("mem", 0) + mem
+            dst["max_mem"] = max(dst.get("max_mem", 0), mem)
+
         return func
